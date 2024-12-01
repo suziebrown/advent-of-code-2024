@@ -4,7 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "node --import tsx --test './*.test.ts'"
+    "test": "node --import tsx --test './*.test.ts'",
+    "start": "node --import tsx 'day01.ts'"
   },
   "keywords": [],
   "author": "",
