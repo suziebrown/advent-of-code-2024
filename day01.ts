@@ -1,6 +1,11 @@
-import { readFile } from "./read-file"
+import { readFile } from "./read-file";
 
-const readData = (filename: string): { leftNumbers: number[], rightNumbers: number[] } => {
+type Data = {
+    leftNumbers: number[];
+    rightNumbers: number[];
+}
+
+const readData = (filename: string): Data => {
     const rawData = readFile(filename);
     const lines = rawData.split('\n');
 
@@ -10,7 +15,7 @@ const readData = (filename: string): { leftNumbers: number[], rightNumbers: numb
     return { leftNumbers, rightNumbers };
 }
 
-const calculateDifferences = (leftNumbers: number[], rightNumbers: number[]): number[] => {
+const calculateDifferences = ({ leftNumbers, rightNumbers }: Data): number[] => {
     leftNumbers.sort();
     rightNumbers.sort();
 
@@ -23,7 +28,7 @@ const calculateDifferences = (leftNumbers: number[], rightNumbers: number[]): nu
     return differences;
 }
 
-const calculateSimilarities = (leftNumbers: number[], rightNumbers: number[]): number[] => {
+const calculateSimilarities = ({ leftNumbers, rightNumbers }: Data): number[] => {
     const similarities = leftNumbers.map(l => l * rightNumbers.filter(r => r === l).length);
     
     return similarities;
@@ -31,7 +36,7 @@ const calculateSimilarities = (leftNumbers: number[], rightNumbers: number[]): n
 
 export const day1part1 = (filename: string): number => {
     const data = readData(filename);
-    const differences = calculateDifferences(data.leftNumbers, data.rightNumbers);
+    const differences = calculateDifferences(data);
 
     const sum = differences.reduce((a,b) => a + b);
     return sum;
@@ -39,7 +44,7 @@ export const day1part1 = (filename: string): number => {
 
 export const day1part2 = (filename: string): number => {
     const data = readData(filename);
-    const similarities = calculateSimilarities(data.leftNumbers, data.rightNumbers);
+    const similarities = calculateSimilarities(data);
 
     const sum = similarities.reduce((a,b) => a + b);
     return sum;
