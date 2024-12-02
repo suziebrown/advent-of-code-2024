@@ -50,5 +50,5 @@ export const day1part2 = (filename: string): number => {
     return sum;
 }
 
-console.log("Part 1: " + day1part1("day01"));
-console.log("Part 2: " + day1part2("day01"));
+console.log("Day 1 Part 1: " + day1part1("day01"));
+console.log("Day 1 Part 2: " + day1part2("day01"));
