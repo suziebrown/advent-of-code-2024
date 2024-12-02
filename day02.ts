@@ -1,4 +1,3 @@
-import { report } from "node:process";
 import { readFile } from "./read-file";
 
 const readData = (filename: string): number[][] => {
@@ -30,15 +29,7 @@ const isSafelyDecreasing = (report: number[]): boolean => {
 }
 
 const isSafe = (report: number[]): boolean => {
-    if (report[0] < report[1]){
-        return isSafelyIncreasing(report);
-    }
-
-    if (report[0] > report[1]){
-        return isSafelyDecreasing(report);
-    }
-
-    return false;
+    return isSafelyIncreasing(report) || isSafelyDecreasing(report);
 }
 
 const isSafeWithDampener = (report: number[]): boolean => {
