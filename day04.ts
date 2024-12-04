@@ -1,4 +1,3 @@
-import { forInStatement } from "@babel/types";
 import { readFile } from "./read-file";
 
 const readData = (filename: string): string => {
@@ -60,6 +59,28 @@ const countDiagonalUp = (rawData: string): number => {
     return countsPerColumn.reduce((a, b) => a + b);
 }
 
+const isBlockACrossMas = (blockRows: string[]): boolean => {
+    const centre = blockRows[1][1];
+    const corners = [blockRows[0][0], blockRows[0][2], blockRows[2][2], blockRows[2][0]].join("");
+
+    return centre === 'A' && (corners === 'MMSS' || corners === 'MSSM' || corners === 'SSMM' || corners === 'SMMS');
+}
+
+const checkBlocks = (rawData: string): boolean[] => {
+    let blockResults: boolean[] = [];
+    const rows = rawData.split("\n");
+
+    for (var col = 0; col < rows[0].length - 2; col++) {
+        for (var row = 0; row < rows.length - 2; row++) {
+            const blockRows = [rows[row].slice(col, col + 3), rows[row + 1].slice(col, col + 3), rows[row + 2].slice(col, col + 3)];
+            
+            blockResults.push(isBlockACrossMas(blockRows));
+        }
+    }
+
+    return blockResults;
+}
+
 export const day4part1 = (filename: string): number => {
     const rawData = readData(filename);
     
@@ -68,8 +89,9 @@ export const day4part1 = (filename: string): number => {
 
 export const day4part2 = (filename: string): number => {
     const rawData = readData(filename);
+    const blockResults = checkBlocks(rawData);
     
-    return 0;
+    return blockResults.filter(r => r === true).length;
 }
 
 console.log("Day 4 Part 1: " + day4part1("day04"));

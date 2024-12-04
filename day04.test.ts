@@ -8,6 +8,6 @@ describe('Day 4', () => {
     });
 
     it('Part 2', () => {
-        assert.equal(day4part2("day04-test"), 0);        
+        assert.equal(day4part2("day04-test"), 9);        
     });
 });
