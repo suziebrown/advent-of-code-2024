@@ -46,6 +46,28 @@ const isInValidOrder = (update: number[], rules: Map<number, number[]>): boolean
     return true;
 }
 
+const putInValidOrder = (update: number[], rules: Map<number, number[]>): number[] => {
+    for (var i = 0; i < update.length; i ++){
+        const currentPage = update[i];
+        const pastPages = update.slice(0, i);
+        const relevantRules = rules.get(currentPage);
+        
+        if (relevantRules) {
+            for (var j = 0; j < relevantRules.length; j++){
+                if (!pastPages.includes(relevantRules[j])) continue;
+
+                const badIndex = pastPages.findIndex(p => p === relevantRules[j]);
+
+                update.splice(badIndex, 1);
+                update.splice(i, 0, relevantRules[j]);
+                i--;
+            }
+        }
+    }
+
+    return update;
+}
+
 const getMiddleValue = (update: number[]): number => {
     return update[Math.floor(update.length / 2)];
 }
@@ -54,15 +76,18 @@ export const day5part1 = (filename: string): number => {
     const { rules, updates } = readData(filename);
     const validMiddleValues = updates.filter(u => isInValidOrder(u, rules)).map(u => getMiddleValue(u));
 
-    console.log({validMiddleValues})
     return validMiddleValues.reduce((a, b) => a + b);
 }
 
 export const day5part2 = (filename: string): number => {
-    const rawData = readData(filename);
+    const { rules, updates } = readData(filename);
+    const invalidUpdates = updates.filter(u => !isInValidOrder(u, rules));
+    const correctedUpdates = invalidUpdates.map(u => putInValidOrder(u, rules));
 
-    return 0;
+    const newMiddleValues = correctedUpdates.map(u => getMiddleValue(u));
+
+    return newMiddleValues.reduce((a, b) => a + b);
 }
 
 console.log("Day 5 Part 1: " + day5part1("day05"));
-// console.log("Day 5 Part 2: " + day5part2("day05"));
+console.log("Day 5 Part 2: " + day5part2("day05"));
